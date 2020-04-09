@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1586442856826.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3458278618",
+    "id" : "385E3225",
+    "lastKnownWriteTime" : 1586445270,
+    "last_content_update" : 1586445270760,
+    "path" : "~/Documents/modelo_seir_bolivia/visualizaciones.R",
+    "project_path" : "visualizaciones.R",
+    "properties" : {
+        "cursorPosition" : "109,0",
+        "scrollLine" : "96"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

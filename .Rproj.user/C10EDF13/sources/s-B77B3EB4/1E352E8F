@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1586442842727.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1268056980",
+    "id" : "1E352E8F",
+    "lastKnownWriteTime" : 1586445446,
+    "last_content_update" : 1586445446978,
+    "path" : "~/Documents/modelo_seir_bolivia/modelo.R",
+    "project_path" : "modelo.R",
+    "properties" : {
+        "cursorPosition" : "114,0",
+        "scrollLine" : "97"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
