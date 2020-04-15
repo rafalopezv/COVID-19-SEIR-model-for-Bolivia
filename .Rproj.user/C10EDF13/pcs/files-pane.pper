@@ -1,0 +1,9 @@
+{
+    "path" : "~/Documents/modelo_seir_bolivia",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

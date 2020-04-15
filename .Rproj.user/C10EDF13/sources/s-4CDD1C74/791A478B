@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1586647634493.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "791A478B",
+    "lastKnownWriteTime" : 0,
+    "last_content_update" : 1586647634493,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "CD47FA66",
+        "caption" : "dia_desde_cuarentena",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=dia_desde_cuarentena&cache_key=CD47FA66",
+        "displayedObservations" : "229",
+        "environment" : "",
+        "expression" : "dia_desde_cuarentena",
+        "object" : "dia_desde_cuarentena",
+        "preview" : "0",
+        "totalObservations" : "229",
+        "variables" : "11"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

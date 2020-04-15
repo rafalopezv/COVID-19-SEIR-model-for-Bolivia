@@ -37,10 +37,10 @@ modelo_seir <- function (current_timepoint, state_values, parameters)
 }
 
 # calculo de valores iniciales
-w <-  11595000          # susceptibles : dato del ine del 7.4.20
-x <-  1                 # infectados
-y <-  0                 # removidos
-z <-  100               # expuestos
+w <-  11595000 - 1 - 30    # susceptibles : dato del ine del 7.4.20
+x <-  1                    # infectados
+y <-  0                    # removidos
+z <-  30                   # expuestos
 
 n <- w + x + y + z
 
@@ -96,8 +96,8 @@ resultados %>%
 # creacion de variables auxiliares para visualizacion y otros
 df %<>% 
   mutate(
-    criticos = i + 0.05,
-    severos = i + 0.14,
+    criticos = i * 0.05,
+    severos = i * 0.14,
     mortalidad = i * 0.025,
     porcentaje_poblacion_infectada = i/n,
     modelo_etiqueta = paste0("Contacto con ", modelo, " personas"),
@@ -109,6 +109,106 @@ df %<>%
 temp <- as.Date("2020-02-29")
 df$fecha <- seq(temp, temp + 180, 1) %>% rep(., 100) 
 
+#  hallazgo de ro para predecir tendencia desde llegada de paciente 0 a cuarentena total
+serie <- read_csv("input/serie_bolivia.csv") %>% janitor::clean_names()
+
+# contagiados el día de decreto de cuarentena
+serie %>% 
+  filter(fecha == "2020-03-22") %>% 
+  pull(numero_oficial_de_infectados)
+
+
+serie_post <- read_csv("input/serie_bolivia_post_cuarentena.csv") %>% janitor::clean_names()
+
+# contagiados el día de decreto de cuarentena
+serie %>% 
+  filter(fecha == "2020-03-22") %>% 
+  pull(numero_oficial_de_infectados)
+
+# verificar cual de las simulaciones predice un valor de 27
+df %>% 
+  filter(dia == 22) %>% 
+  select(ro, dia, i) %>%
+  filter(i > 26 & i < 28) # ro = 6
+  
+df %>% 
+  filter(ro == 6) %>% 
+  select(i, fecha) %>% 
+  slice(1: nrow(serie)) %>% 
+  merge(serie, .) -> dia_0_cuarentena
+
+
+#---------------------------------------------------------
+# con el ro hallado post cuarentena: evolución pandemia
+#---------------------------------------------------------
+w <-  11594163          # susceptibles : dato del ine del 7.4.20
+x <-  27                # infectados
+y <-  0                 # removidos
+z <-  810               # expuestos
+
+n <- w + x + y + z
+
+valores_iniciales <-  c(s = w/n, e = x/n, i = y/n, r = z/n)
+
+# ajuste de parametros
+ratio_contacto <- 8.1 # parámetro hallado
+probabilidad_transmision <- 0.04
+periodo_infeccion <-  7.5
+periodo_latencia <-  6
+valor_beta <-  ratio_contacto * probabilidad_transmision
+valor_gamma <-  1 / periodo_infeccion
+valor_delta <-  1 / periodo_latencia
+parametros <-  c(beta = valor_beta, gamma = valor_gamma, delta = valor_delta)
+duracion <- seq(22, 250, 1) # 22 es inicio de cuarentena; parametro de 250 para ver evolución de curva
+
+lsoda(valores_iniciales, duracion, modelo_seir, parametros) %>% 
+  as.data.frame() %>% 
+  mutate(
+    criticos = i * 0.05,
+    severos = i * 0.14,
+    mortalidad = i * 0.025,
+    porcentaje_poblacion_infectada = i/n,
+    ro = valor_beta / valor_gamma,
+    fecha = seq(as.Date("2020-03-23"), as.Date("2020-03-23") + (250 - 22), 1)
+  ) %>% 
+  rename(dia = time)  -> dia_desde_cuarentena
+
+#---------------------------------------------------------
+# con el ro hallado pre cuarentena: evolución pandemia
+#---------------------------------------------------------
+w <-  11594969          # susceptibles : dato del ine del 7.4.20
+x <-  1                 # infectados
+y <-  0                 # removidos
+z <-  30               # expuestos
+
+n <- w + x + y + z
+
+# ajuste de parametros
+ratio_contacto <- 20
+probabilidad_transmision <- 0.04
+periodo_infeccion <-  7.5
+periodo_latencia <-  6
+valor_beta <-  ratio_contacto * probabilidad_transmision
+valor_gamma <-  1 / periodo_infeccion
+valor_delta <-  1 / periodo_latencia
+parametros <-  c(beta = valor_beta, gamma = valor_gamma, delta = valor_delta)
+duracion <- seq(0, 180, 1)
+
+lsoda(valores_iniciales, duracion, modelo_seir, parametros) %>% 
+  as.data.frame() %>% 
+  mutate(
+    criticos = i * 0.05,
+    severos = i * 0.14,
+    mortalidad = i * 0.025,
+    porcentaje_poblacion_infectada = i/n,
+    ro = valor_beta / valor_gamma,
+    fecha = seq(as.Date("2020-02-29"), as.Date("2020-02-29") + 180, 1)
+  ) %>% 
+  rename(dia = time)  -> dia_desde_antes_cuarentena 
+
 # remover lo inservible
 rm(valor_beta, ratio_contacto, valor_delta, valor_gamma, periodo_infeccion, valores_iniciales, temp,
-   periodo_latencia, secuencia, duracion, probabilidad_transmision, w, x, y, z, parameter_list, resultados, n, ro, modelo_seir)
+   periodo_latencia, secuencia, duracion, probabilidad_transmision, w, x, y, z, parameter_list, resultados, n, ro, modelo_seir, 
+   serie, parametros)
+
+
