@@ -22,7 +22,7 @@ modelo_seir <- function (current_timepoint, state_values, parameters)
     as.list(parameters),      # para usar nombres de las variables dentro de los parametros
     {
       
-      # sistema de ecuaciones diferenciales del modelo
+      # sistema de ecuaciones diferenciales del modelo SEIR
       dS = (-beta * s * i)
       dE = (beta * s * i) - (delta * e)
       dI = (delta * e) - (gamma * i)
@@ -36,7 +36,7 @@ modelo_seir <- function (current_timepoint, state_values, parameters)
   )
 }
 
-# calculo de valores iniciales
+# calculo de los valores iniciales de los parametros del modelo
 w <-  11595000 - 1 - 30    # susceptibles : dato del ine del 7.4.20
 x <-  1                    # infectados
 y <-  0                    # removidos
