@@ -1,4 +1,9 @@
-# modelo_seir_bolivia
+# COVID-19 SEIR model for Bolivia
+
+
+
+
+
 Aplicación del modelo SEIR a Bolivia. COVID-19
 
 
